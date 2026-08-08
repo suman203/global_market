@@ -13,10 +13,13 @@ export default function ProductCard({ product }: { product: Product }) {
   const { toast } = useToast()
 
   const handleAdd = () => {
-    addToCart.mutate(product.id, {
-      onSuccess: () => toast(`${product.name} added to cart`),
-      onError: (error) => toast(error.message, 'error'),
-    })
+    addToCart.mutate(
+      { product },
+      {
+        onSuccess: () => toast(`${product.name} added to cart`),
+        onError: (error) => toast(error.message, 'error'),
+      },
+    )
   }
 
   return (

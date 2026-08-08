@@ -4,6 +4,61 @@ import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react'
 import { useCart, useAddToCart, useRemoveFromCart, useClearCart, useCheckout } from '../hooks/useCart'
 import { useToast } from './Toast'
 import { formatPrice } from '../lib/format'
+import type { CartItem } from '../types/api'
+
+export function CartItemRow({ item, onNavigate }: { item: CartItem; onNavigate?: () => void }) {
+  const addToCart = useAddToCart()
+  const removeFromCart = useRemoveFromCart()
+
+  return (
+    <li className="flex gap-3 rounded-xl border border-white/5 bg-ink-800 p-3">
+      <img
+        src={item.product.imageUrl}
+        alt={item.product.name}
+        className="h-20 w-20 rounded-lg object-cover"
+        loading="lazy"
+      />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Link
+          to={`/product/${item.product.id}`}
+          onClick={onNavigate}
+          className="truncate font-display text-sm font-semibold text-cream hover:text-gold-300"
+        >
+          {item.product.name}
+        </Link>
+        <p className="text-xs text-gold-400">{formatPrice(item.product.price)}</p>
+        <div className="mt-auto flex items-center justify-between pt-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => removeFromCart.mutate(item.product.id)}
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-mist transition-colors hover:text-cream"
+              aria-label={`Decrease quantity of ${item.product.name}`}
+            >
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+            <span className="w-6 text-center text-sm text-cream">{item.quantity}</span>
+            <button
+              onClick={() => addToCart.mutate({ product: item.product })}
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-mist transition-colors hover:text-cream"
+              aria-label={`Increase quantity of ${item.product.name}`}
+            >
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <button
+            onClick={() => {
+              for (let i = 0; i < item.quantity; i++) removeFromCart.mutate(item.product.id)
+            }}
+            className="flex h-7 w-7 items-center justify-center rounded-full text-mist transition-colors hover:text-danger"
+            aria-label={`Remove ${item.product.name} from cart`}
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </li>
+  )
+}
 
 interface CartDrawerProps {
   open: boolean
@@ -12,8 +67,6 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const { data: cart, isLoading } = useCart()
-  const addToCart = useAddToCart()
-  const removeFromCart = useRemoveFromCart()
   const clearCart = useClearCart()
   const checkout = useCheckout()
   const { toast } = useToast()
@@ -90,52 +143,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               ) : (
                 <ul className="space-y-3">
                   {items.map((item) => (
-                    <li key={item.product.id} className="flex gap-3 rounded-xl border border-white/5 bg-ink-800 p-3">
-                      <img
-                        src={item.product.imageUrl}
-                        alt={item.product.name}
-                        className="h-20 w-20 rounded-lg object-cover"
-                        loading="lazy"
-                      />
-                      <div className="flex min-w-0 flex-1 flex-col">
-                        <Link
-                          to={`/product/${item.product.id}`}
-                          onClick={onClose}
-                          className="truncate font-display text-sm font-semibold text-cream hover:text-gold-300"
-                        >
-                          {item.product.name}
-                        </Link>
-                        <p className="text-xs text-gold-400">{formatPrice(item.product.price)}</p>
-                        <div className="mt-auto flex items-center justify-between pt-2">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => removeFromCart.mutate(item.product.id)}
-                              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-mist transition-colors hover:text-cream"
-                              aria-label={`Decrease quantity of ${item.product.name}`}
-                            >
-                              <Minus className="h-3.5 w-3.5" />
-                            </button>
-                            <span className="w-6 text-center text-sm text-cream">{item.quantity}</span>
-                            <button
-                              onClick={() => addToCart.mutate(item.product.id)}
-                              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 text-mist transition-colors hover:text-cream"
-                              aria-label={`Increase quantity of ${item.product.name}`}
-                            >
-                              <Plus className="h-3.5 w-3.5" />
-                            </button>
-                          </div>
-                          <button
-                            onClick={() => {
-                              for (let i = 0; i < item.quantity; i++) removeFromCart.mutate(item.product.id)
-                            }}
-                            className="flex h-7 w-7 items-center justify-center rounded-full text-mist transition-colors hover:text-danger"
-                            aria-label={`Remove ${item.product.name} from cart`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </li>
+                    <CartItemRow key={item.product.id} item={item} onNavigate={onClose} />
                   ))}
                 </ul>
               )}

@@ -11,6 +11,7 @@ import ProductDetail from './pages/ProductDetail'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import Cart from './pages/Cart'
 import NotFound from './pages/NotFound'
 import Placeholder from './pages/Placeholder'
 
@@ -28,7 +29,7 @@ export default function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/cart" element={<Placeholder title="Your cart" />} />
+              <Route path="/cart" element={<Cart />} />
               <Route
                 path="/profile"
                 element={

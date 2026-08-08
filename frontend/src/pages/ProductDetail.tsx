@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft, Minus, Plus, ShoppingBag } from 'lucide-react'
-import { api } from '../api/endpoints'
 import { useProduct, useProducts } from '../hooks/useCatalog'
+import { useAddToCart } from '../hooks/useCart'
 import { useToast } from '../components/Toast'
 import ProductCard from '../components/ProductCard'
 import { countryInfo } from '../lib/country'
@@ -22,16 +21,8 @@ export default function ProductDetail() {
   const relatedItems = (related ?? []).filter((p) => p.id !== productId).slice(0, 4)
 
   const [quantity, setQuantity] = useState(1)
-  const queryClient = useQueryClient()
   const { toast } = useToast()
-  const addToCart = useMutation({
-    mutationFn: async (payload: { productId: number; quantity: number }) => {
-      for (let i = 0; i < payload.quantity; i++) {
-        await api.cart.add(payload.productId)
-      }
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
-  })
+  const addToCart = useAddToCart()
 
   if (isLoading) {
     return (
@@ -58,7 +49,7 @@ export default function ProductDetail() {
 
   const handleAdd = () => {
     addToCart.mutate(
-      { productId: product.id, quantity },
+      { product, quantity },
       {
         onSuccess: () =>
           toast(`${quantity > 1 ? `${quantity} × ` : ''}${product.name} added to cart`),
