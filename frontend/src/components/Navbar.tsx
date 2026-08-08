@@ -71,20 +71,22 @@ export default function Navbar({ onOpenCart }: { onOpenCart: () => void }) {
               {user.role === 'ADMIN' && (
                 <Link
                   to="/admin"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-mist transition-colors hover:bg-white/5 hover:text-gold-300"
-                  title="Admin dashboard"
+                  className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-gold-300 transition-colors hover:bg-white/5"
                 >
                   <ShieldCheck className="h-5 w-5" />
+                  <span className="max-w-24 truncate">{user.username}</span>
                 </Link>
               )}
-              <Link
-                to="/profile"
-                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm text-cream transition-colors hover:bg-white/5"
-                title="Your profile"
-              >
-                <UserRound className="h-5 w-5 text-gold-400" />
-                <span className="max-w-24 truncate font-medium">{user.username}</span>
-              </Link>
+              {user.role === 'USER' && (
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 rounded-full px-3 py-2 text-sm text-cream transition-colors hover:bg-white/5"
+                  title="Your profile"
+                >
+                  <UserRound className="h-5 w-5 text-gold-400" />
+                  <span className="max-w-24 truncate font-medium">{user.username}</span>
+                </Link>
+              )}
               <button
                 onClick={() => void logout()}
                 className="flex h-10 w-10 items-center justify-center rounded-full text-mist transition-colors hover:bg-white/5 hover:text-danger"

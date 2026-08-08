@@ -5,8 +5,12 @@ import { ToastProvider } from './components/Toast'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
+import RequireAuth from './components/RequireAuth'
 import Home from './pages/Home'
 import ProductDetail from './pages/ProductDetail'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import Placeholder from './pages/Placeholder'
 
@@ -22,13 +26,41 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/login" element={<Placeholder title="Log in" />} />
-              <Route path="/register" element={<Placeholder title="Register" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/cart" element={<Placeholder title="Your cart" />} />
-              <Route path="/profile" element={<Placeholder title="Profile" />} />
-              <Route path="/admin" element={<Placeholder title="Admin dashboard" />} />
-              <Route path="/admin/product/new" element={<Placeholder title="New product" />} />
-              <Route path="/admin/product/:id/edit" element={<Placeholder title="Edit product" />} />
+              <Route
+                path="/profile"
+                element={
+                  <RequireAuth role="USER">
+                    <Profile />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequireAuth role="ADMIN">
+                    <Placeholder title="Admin dashboard" />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin/product/new"
+                element={
+                  <RequireAuth role="ADMIN">
+                    <Placeholder title="New product" />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/admin/product/:id/edit"
+                element={
+                  <RequireAuth role="ADMIN">
+                    <Placeholder title="Edit product" />
+                  </RequireAuth>
+                }
+              />
               <Route path="/about" element={<Placeholder title="About" />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
