@@ -12,6 +12,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Cart from './pages/Cart'
+import AdminDashboard from './pages/AdminDashboard'
+import AdminProductForm from './pages/AdminProductForm'
 import NotFound from './pages/NotFound'
 import Placeholder from './pages/Placeholder'
 
@@ -42,7 +44,7 @@ export default function App() {
                 path="/admin"
                 element={
                   <RequireAuth role="ADMIN">
-                    <Placeholder title="Admin dashboard" />
+                    <AdminDashboard />
                   </RequireAuth>
                 }
               />
@@ -50,7 +52,7 @@ export default function App() {
                 path="/admin/product/new"
                 element={
                   <RequireAuth role="ADMIN">
-                    <Placeholder title="New product" />
+                    <AdminProductForm />
                   </RequireAuth>
                 }
               />
@@ -58,7 +60,7 @@ export default function App() {
                 path="/admin/product/:id/edit"
                 element={
                   <RequireAuth role="ADMIN">
-                    <Placeholder title="Edit product" />
+                    <AdminProductForm />
                   </RequireAuth>
                 }
               />

@@ -31,3 +31,23 @@ export const registerSchema = z
     path: ['passwordConfirm'],
   })
 export type RegisterValues = z.infer<typeof registerSchema>
+
+export const productSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(32, 'Name must be at most 32 characters'),
+  description: z.string().min(1, 'Description is required'),
+  imageUrl: z
+    .string()
+    .url('Enter a valid image URL')
+    .optional()
+    .or(z.literal('')),
+  price: z.coerce
+    .number({ invalid_type_error: 'Enter a price' })
+    .positive('Price must be positive'),
+  categoryId: z.coerce.number({ invalid_type_error: 'Choose a category' }),
+})
+export type ProductFormValues = z.infer<typeof productSchema>
+
+export const FALLBACK_IMAGE = 'https://placehold.co/600x400/png?text=Global+Market'
