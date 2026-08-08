@@ -40,7 +40,7 @@ export default function AuthShell({
             The world&apos;s finest souvenirs, <span className="italic text-gold-400">curated</span>.
           </h1>
           <p className="mt-4 max-w-sm text-mist">
-            Handpicked keepsakes from ten countries. Join the atelier to build your collection.
+            Handpicked keepsakes from around the world. Join the atelier to build your collection.
           </p>
         </div>
       </div>

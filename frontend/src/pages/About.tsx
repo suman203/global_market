@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, MapPin } from 'lucide-react'
-import { COUNTRIES, countryInfo } from '../lib/country'
+import { useCategories } from '../hooks/useCatalog'
+import { countryInfo } from '../lib/country'
 
 function WorldPattern() {
   return (
@@ -20,6 +21,8 @@ function WorldPattern() {
 }
 
 export default function About() {
+  const { data: countries, isLoading } = useCategories()
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
       <section className="relative overflow-hidden pb-16 pt-20 text-center sm:pt-24">
@@ -51,7 +54,7 @@ export default function About() {
             hand-thrown pot, the woven textile, the painted box — could find a permanent shelf.
           </p>
           <p>
-            Today we work with small workshops and family ateliers across ten countries. Every item
+            Today we work with small workshops and family ateliers across the world. Every item
             is chosen for what it tells you about its place: the craft, the colour, the hands that
             made it. No factory runs, no reproductions, nothing that could be bought in an airport.
           </p>
@@ -62,26 +65,30 @@ export default function About() {
         </div>
 
         <div className="card space-y-4 lg:col-span-2">
-          <h2 className="font-display text-2xl font-semibold text-cream">Ten countries, one market</h2>
+          <h2 className="font-display text-2xl font-semibold text-cream">One market, country by country</h2>
           <p className="text-sm text-mist">
-            Every item in our collection carries its origin on its sleeve. Here are the places we
-            visit for you.
+            Every item in our collection carries its origin on its sleeve — and we keep adding new
+            places as the collection grows.
           </p>
           <div className="grid grid-cols-2 gap-2">
-            {COUNTRIES.map((country) => (
-              <Link
-                key={country.name}
-                to={`/?country=${encodeURIComponent(country.name)}`}
-                className="group flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.03] px-3 py-2 text-sm text-cream transition-colors hover:border-white/10"
-              >
-                <span className="text-base">{country.emoji}</span>
-                <span className="flex-1">{country.name}</span>
-                <span
-                  className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: countryInfo(country.name).accent }}
-                />
-              </Link>
-            ))}
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="h-9 animate-pulse rounded-lg bg-white/5" />
+                ))
+              : countries?.map((country) => (
+                  <Link
+                    key={country.id}
+                    to={`/?country=${encodeURIComponent(country.name)}`}
+                    className="group flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.03] px-3 py-2 text-sm text-cream transition-colors hover:border-white/10"
+                  >
+                    <span className="text-base">{countryInfo(country.name).emoji}</span>
+                    <span className="flex-1">{country.name}</span>
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: countryInfo(country.name).accent }}
+                    />
+                  </Link>
+                ))}
           </div>
         </div>
       </section>
@@ -106,16 +113,16 @@ export default function About() {
             </div>
           </div>
           <div className="grid grid-cols-5 gap-2 sm:grid-cols-10 lg:grid-cols-5">
-            {COUNTRIES.map((country) => {
+            {countries?.map((country) => {
               const info = countryInfo(country.name)
               return (
                 <div
-                  key={country.name}
+                  key={country.id}
                   title={country.name}
                   className="flex h-12 items-center justify-center rounded-lg border border-white/5 text-lg"
                   style={{ background: `linear-gradient(135deg, ${info.gradient[0]}33, ${info.gradient[1]}22)` }}
                 >
-                  {country.emoji}
+                  {info.emoji}
                 </div>
               )
             })}

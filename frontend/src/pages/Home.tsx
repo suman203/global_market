@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { ArrowRight, SearchX } from 'lucide-react'
 import { useCategories, useProducts } from '../hooks/useCatalog'
 import ProductCard from '../components/ProductCard'
-import { COUNTRIES, countryInfo } from '../lib/country'
+import { countryInfo } from '../lib/country'
 import type { SortOption } from '../types/api'
 
 function WorldPattern() {
@@ -85,7 +85,7 @@ export default function Home() {
             <span className="italic text-gold-400">curated</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base text-mist sm:text-lg">
-            Handpicked keepsakes from ten countries — each with a story, each priced for the traveler.
+            Handpicked keepsakes from around the world — each with a story, each priced for the traveler.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a href="#collection" className="btn-gold px-7 py-3 text-base">
@@ -100,22 +100,23 @@ export default function Home() {
 
       <section className="pb-6">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          {COUNTRIES.map((country) => {
-            const active = country.name === countryName
+          {categories?.map((category) => {
+            const info = countryInfo(category.name)
+            const active = category.name === countryName
             return (
               <button
-                key={country.name}
-                onClick={() => selectCountry(country.name)}
+                key={category.id}
+                onClick={() => selectCountry(category.name)}
                 className="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-200"
                 style={
                   active
-                    ? { backgroundColor: country.accent, borderColor: country.accent, color: '#fff' }
+                    ? { backgroundColor: info.accent, borderColor: info.accent, color: '#fff' }
                     : { borderColor: 'rgba(255,255,255,0.1)', color: '#94a3b8' }
                 }
                 aria-pressed={active}
               >
-                <span>{country.emoji}</span>
-                {country.name}
+                <span>{info.emoji}</span>
+                {category.name}
               </button>
             )
           })}

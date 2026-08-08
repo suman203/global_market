@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 import Brand from './Brand'
-import { COUNTRIES } from '../lib/country'
+import { useCategories } from '../hooks/useCatalog'
+import { countryInfo } from '../lib/country'
 
 export default function Footer() {
+  const { data: countries } = useCategories()
+
   return (
     <footer className="border-t border-white/5 bg-ink-900/60">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -17,13 +20,13 @@ export default function Footer() {
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-mist">Explore</p>
             <ul className="flex max-w-md flex-wrap gap-2">
-              {COUNTRIES.map((country) => (
-                <li key={country.name}>
+              {countries?.map((country) => (
+                <li key={country.id}>
                   <Link
                     to={`/?country=${encodeURIComponent(country.name)}`}
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1 text-xs text-mist transition-colors hover:border-gold-400/50 hover:text-gold-300"
                   >
-                    <span>{country.emoji}</span>
+                    <span>{countryInfo(country.name).emoji}</span>
                     {country.name}
                   </Link>
                 </li>
