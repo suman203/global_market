@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink-950: #0a0e1a;
+  --color-ink-900: #111827;
+  --color-ink-800: #1f2937;
+  --color-ink-700: #2b3a4d;
+  --color-gold-300: #f2dcae;
+  --color-gold-400: #e8c47a;
+  --color-gold-500: #c9a961;
+  --color-gold-600: #a98a45;
+  --color-cream: #f7f3ec;
+  --color-mist: #94a3b8;
+  --color-danger: #e5484d;
+
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --shadow-soft: 0 8px 30px rgba(10, 14, 26, 0.35);
+  --shadow-glow: 0 0 0 1px rgba(232, 196, 122, 0.25), 0 8px 30px rgba(232, 196, 122, 0.15);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-ink-950 text-cream font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-gold-500/30 text-cream;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-950);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-700);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold-600);
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .card {
+    @apply bg-ink-800 rounded-xl border border-white/5 shadow-soft;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60 disabled:opacity-50 disabled:cursor-not-allowed bg-gold-400 text-ink-950 hover:bg-gold-300 hover:shadow-glow active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 text-cream hover:border-gold-400/50 hover:text-gold-300;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60 disabled:opacity-50 disabled:cursor-not-allowed bg-danger text-white hover:bg-red-500 active:scale-[0.98];
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-white/10 bg-ink-900 px-4 py-2.5 text-sm text-cream placeholder:text-mist/60 transition-colors focus:border-gold-400/60 focus:outline-none focus:ring-1 focus:ring-gold-400/40;
+  }
+}
