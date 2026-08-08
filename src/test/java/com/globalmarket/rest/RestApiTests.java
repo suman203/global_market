@@ -68,6 +68,13 @@ public class RestApiTests {
     }
 
     @Test
+    public void productsSortByNewestFirst() throws Exception {
+        mockMvc.perform(get("/api/products").param("sort", "newest"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Flamenco Castanets"));
+    }
+
+    @Test
     public void productDetailReturnsProduct() throws Exception {
         long firstId = firstProductId();
 

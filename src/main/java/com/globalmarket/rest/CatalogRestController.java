@@ -47,6 +47,8 @@ public class CatalogRestController {
             products.sort(Comparator.comparing(Product::getPrice));
         } else if ("price_desc".equals(sort)) {
             products.sort(Comparator.comparing(Product::getPrice).reversed());
+        } else if ("newest".equals(sort)) {
+            products.sort(Comparator.comparing(Product::getId).reversed());
         }
 
         return mapper.toProductDtos(products);
