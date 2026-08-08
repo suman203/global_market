@@ -32,6 +32,7 @@
                     </div>
                     <img class="card-img-top" th:if="${!product.getImageUrl().isEmpty()}" th:src="${product.getImageUrl()}" alt="Card image cap">
                     <div class="card-body">
+                        <a th:if="${product.getCategory() != null}" th:href="@{/searchByCategory(categoryId=${product.getCategory().getId()})}" class="badge badge-info" th:text="${product.getCategory().getCategoryName()}"></a>
                         <h4 class="card-title" th:text="${product.getName()}"></h4>
                         <p class="card-text" th:text="${product.getDescription()}"></p>
                     </div>

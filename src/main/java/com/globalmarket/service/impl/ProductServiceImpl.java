@@ -29,7 +29,10 @@ public class ProductServiceImpl implements ProductService {
         found.setImageUrl(newProduct.getImageUrl());
         found.setDescription(newProduct.getDescription());
         found.setPrice(newProduct.getPrice());
-        save(newProduct);
+        if (newProduct.getCategory() != null) {
+            found.setCategory(newProduct.getCategory());
+        }
+        save(found);
     }
 
     @Override
@@ -50,6 +53,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAllByCategoryId(long categoryId) {
         return productRepository.findAllByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Product> searchByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override

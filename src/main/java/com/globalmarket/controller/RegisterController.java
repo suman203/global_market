@@ -41,8 +41,9 @@ public class RegisterController {
             return "register";
         }
 
+        String rawPassword = userForm.getPasswordConfirm();
         userService.save(userForm);
-        userService.login(userForm.getUsername(), userForm.getPasswordConfirm());
+        userService.login(userForm.getUsername(), rawPassword);
 
         return "redirect:/home";
     }

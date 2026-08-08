@@ -32,8 +32,8 @@ public class MarketDataInitializer implements CommandLineRunner {
     public void run(String... args) {
         adminAccount();
         userAccount();
-        category();
-        exampleProducts();
+        countries();
+        souvenirProducts();
     }
 
     private void userAccount(){
@@ -60,56 +60,55 @@ public class MarketDataInitializer implements CommandLineRunner {
         userService.save(admin);
     }
 
-    private void category(){
-        Category category1 = new Category();
-        Category category2 = new Category();
-        category1.setId(1);
-        category1.setCategoryName("Adventure");
-        category2.setId(2);
-        category2.setCategoryName("Novel");
+    private void countries(){
+        String[] names = {
+                "France", "Japan", "Italy", "India", "Mexico",
+                "Morocco", "Vietnam", "Turkey", "Brazil", "Spain"
+        };
 
-        categoryRepository.save(category1);
-        categoryRepository.save(category2);
+        for (String name : names) {
+            Category category = new Category();
+            category.setCategoryName(name);
+            categoryRepository.save(category);
+        }
     }
 
-    private void exampleProducts(){
-        final String NAME = "Example Name";
-        final String IMAGE_URL = "https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX7389458.jpg";
-        final String DESCRIPTION = "Example Description";
-        final BigDecimal PRICE = BigDecimal.valueOf(22);
+    private void souvenirProducts(){
+        String[] names = {
+                "Eiffel Tower Keychain",
+                "Cherry Blossom Fan",
+                "Venetian Carnival Mask",
+                "Spice Gift Box",
+                "Aztec Calendar Pendant",
+                "Mosaic Lantern",
+                "Ao Dai Doll",
+                "Evil Eye Pendant",
+                "Samba Drum Keychain",
+                "Flamenco Castanets"
+        };
+        String[] countries = {
+                "France", "Japan", "Italy", "India", "Mexico",
+                "Morocco", "Vietnam", "Turkey", "Brazil", "Spain"
+        };
+        String[] prices = {
+                "19.99", "24.99", "29.99", "14.99", "18.99",
+                "27.99", "21.99", "12.99", "16.99", "22.99"
+        };
 
-        Product product1 = new Product();
-        Product product2 = new Product();
-        Product product3 = new Product();
-        Product product4 = new Product();
+        for (int i = 0; i < names.length; i++) {
+            Product product = new Product();
+            product.setName(names[i]);
+            product.setDescription("Souvenir price for " + countries[i]);
+            product.setCategory(categoryRepository.findByCategoryName(countries[i]));
+            product.setPrice(BigDecimal.valueOf(Double.parseDouble(prices[i])));
+            product.setImageUrl(imageUrl(names[i], countries[i]));
 
-        product1.setName(NAME);
-        product1.setImageUrl(IMAGE_URL);
-        product1.setDescription(DESCRIPTION);
-        product1.setCategory(categoryRepository.findByCategoryName("Adventure"));
-        product1.setPrice(PRICE);
+            productService.save(product);
+        }
+    }
 
-        product2.setName(NAME);
-        product2.setImageUrl(IMAGE_URL);
-        product2.setDescription(DESCRIPTION);
-        product2.setCategory(categoryRepository.findByCategoryName("Adventure"));
-        product2.setPrice(PRICE);
-
-        product3.setName(NAME);
-        product3.setImageUrl(IMAGE_URL);
-        product3.setDescription(DESCRIPTION);
-        product3.setCategory(categoryRepository.findByCategoryName("Novel"));
-        product3.setPrice(PRICE);
-
-        product4.setName(NAME);
-        product4.setImageUrl(IMAGE_URL);
-        product4.setDescription(DESCRIPTION);
-        product4.setCategory(categoryRepository.findByCategoryName("Novel"));
-        product4.setPrice(PRICE);
-
-        productService.save(product1);
-        productService.save(product2);
-        productService.save(product3);
-        productService.save(product4);
+    private String imageUrl(String name, String country){
+        String text = (name + " - " + country).replace(" ", "+");
+        return "https://placehold.co/600x400/png?text=" + text;
     }
 }
