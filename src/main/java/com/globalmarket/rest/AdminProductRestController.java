@@ -2,6 +2,7 @@ package com.globalmarket.rest;
 
 import com.globalmarket.domain.Product;
 import com.globalmarket.rest.dto.ApiError;
+import com.globalmarket.rest.dto.ProductDto;
 import com.globalmarket.rest.dto.ProductRequest;
 import com.globalmarket.service.CategoryService;
 import com.globalmarket.service.ProductService;
@@ -14,6 +15,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -42,6 +45,11 @@ public class AdminProductRestController {
         this.productValidator = productValidator;
         this.mapper = mapper;
         this.messageSource = messageSource;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> list() {
+        return ResponseEntity.ok(mapper.toProductDtos(productService.findAllByOrderByIdAsc()));
     }
 
     @PostMapping

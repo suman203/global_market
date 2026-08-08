@@ -48,13 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/","/home","/index","/about","/help","/register","/cart/**").permitAll()
-                .antMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
-                .antMatchers("/login", "/logout").permitAll()
+                // Public REST endpoints (products, categories, session cart, auth)
                 .antMatchers("/api/auth/**", "/api/products/**", "/api/categories/**", "/api/cart/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/user/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers("/api/**").authenticated()
+                // Everything else is the SPA (served from /static/index.html)
+                .anyRequest().permitAll()
                 .and().exceptionHandling()
                 .defaultAuthenticationEntryPointFor(
                         (request, response, authException) -> {
@@ -72,15 +72,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             response.getWriter().write("{\"status\":403,\"message\":\"Access denied.\"}");
                         },
                         new AntPathRequestMatcher("/api/**"))
-                .and().formLogin().loginPage("/login").permitAll()
-                .and().logout().invalidateHttpSession(true).clearAuthentication(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
                 .and().headers().frameOptions().sameOrigin();
     }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/webjars/**", "/js/**","/error/**"
-                , "/css/**","/fonts/**","/libs/**","/img/**","/h2-console/**");
+        web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Autowired

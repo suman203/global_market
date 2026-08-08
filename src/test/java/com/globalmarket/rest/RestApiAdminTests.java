@@ -64,6 +64,15 @@ public class RestApiAdminTests {
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
+    public void adminListProductsAsAdminReturns200() throws Exception {
+        mockMvc.perform(get("/api/admin/products"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].id").exists());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
     public void adminCreateProductAsAdminReturns201() throws Exception {
         mockMvc.perform(post("/api/admin/products")
                         .contentType(MediaType.APPLICATION_JSON)

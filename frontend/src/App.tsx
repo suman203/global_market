@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import RequireAuth from './components/RequireAuth'
+import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
 import ProductDetail from './pages/ProductDetail'
 import Login from './pages/Login'
@@ -14,8 +15,8 @@ import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminProductForm from './pages/AdminProductForm'
+import About from './pages/About'
 import NotFound from './pages/NotFound'
-import Placeholder from './pages/Placeholder'
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -23,7 +24,8 @@ export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
-        <div className="flex min-h-screen flex-col">
+        <ErrorBoundary>
+          <div className="flex min-h-screen flex-col">
           <Navbar onOpenCart={() => setDrawerOpen(true)} />
           <main className="flex-1">
             <Routes>
@@ -64,13 +66,14 @@ export default function App() {
                   </RequireAuth>
                 }
               />
-              <Route path="/about" element={<Placeholder title="About" />} />
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
           <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-        </div>
+          </div>
+        </ErrorBoundary>
       </ToastProvider>
     </AuthProvider>
   )
