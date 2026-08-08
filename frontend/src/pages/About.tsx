@@ -45,8 +45,8 @@ export default function About() {
         </div>
       </section>
 
-      <section className="grid gap-10 pb-20 lg:grid-cols-5">
-        <div className="space-y-5 text-sm leading-relaxed text-mist lg:col-span-3">
+      <section className="grid gap-12 pb-24 lg:grid-cols-5">
+        <div className="space-y-6 text-base leading-relaxed text-mist lg:col-span-3">
           <p>
             Global Market began with a simple frustration: authentic souvenirs are everywhere if you
             are standing in the right market, and nowhere at all once you are home. We wanted a
@@ -64,27 +64,34 @@ export default function About() {
           </p>
         </div>
 
-        <div className="card space-y-4 lg:col-span-2">
-          <h2 className="font-display text-2xl font-semibold text-cream">One market, country by country</h2>
-          <p className="text-sm text-mist">
-            Every item in our collection carries its origin on its sleeve — and we keep adding new
-            places as the collection grows.
-          </p>
-          <div className="grid grid-cols-2 gap-2">
+        <div className="card space-y-6 p-6 sm:p-8 lg:col-span-2">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
+              The collection
+            </p>
+            <h2 className="font-display text-2xl font-semibold text-cream sm:text-3xl">
+              One market, country by country
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-mist sm:text-base">
+              Every item carries its origin on its sleeve — and we keep adding new places as the
+              collection grows.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
             {isLoading
               ? Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="h-9 animate-pulse rounded-lg bg-white/5" />
+                  <div key={i} className="h-12 animate-pulse rounded-xl bg-white/5" />
                 ))
               : countries?.map((country) => (
                   <Link
                     key={country.id}
                     to={`/?country=${encodeURIComponent(country.name)}`}
-                    className="group flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.03] px-3 py-2 text-sm text-cream transition-colors hover:border-white/10"
+                    className="group flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/[0.03] px-4 py-3 text-sm text-cream transition-colors hover:border-white/10"
                   >
-                    <span className="text-base">{countryInfo(country.name).emoji}</span>
+                    <span className="text-lg">{countryInfo(country.name).emoji}</span>
                     <span className="flex-1">{country.name}</span>
                     <span
-                      className="h-2 w-2 rounded-full"
+                      className="h-2.5 w-2.5 rounded-full"
                       style={{ backgroundColor: countryInfo(country.name).accent }}
                     />
                   </Link>
